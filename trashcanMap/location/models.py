@@ -21,3 +21,4 @@ class Trashcan(models.Model):
     longitude = models.FloatField()
     address = models.CharField(max_length=50)
     image = models.FileField(upload_to=date_upload_to, max_length=300)
+    description = models.CharField(max_length=200)
