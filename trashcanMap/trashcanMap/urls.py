@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('signup/',views.SignupView.as_view()),
+    path('signin/',views.LoginView.as_view()),
     path('admin/', admin.site.urls)
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,6 +9,7 @@ from location.permissions import *
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
+from django.contrib.auth import authenticate
 
 class TrashcanViewSet(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
@@ -26,3 +27,12 @@ class SignupView(APIView):
 
         token = Token.objects.create(user=user)
         return Response({"Token": token.key})
+
+class LoginView(APIView):
+    def post(self, request):
+        user = authenticate(username=request.data['id'], password=request.data['password'])
+        if user is not None:
+            token = Token.objects.get(user=user)
+            return Response({"Token": token.key})
+        else:
+            return Response(status=401)

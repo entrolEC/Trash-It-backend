@@ -22,6 +22,7 @@ class Profile(models.Model):
     nickname = models.TextField()
 
 class Trashcan(models.Model):
+    user = models.CharField(max_length=20)
     latitude = models.FloatField()
     longitude = models.FloatField()
     address = models.CharField(max_length=50)
