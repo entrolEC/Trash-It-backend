@@ -2,6 +2,7 @@ from django.db import models
 from uuid import uuid4
 from django.utils import timezone
 import os
+from django.contrib.auth.models import User
 
 def date_upload_to(instance, filename):
   # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
@@ -15,6 +16,10 @@ def date_upload_to(instance, filename):
     ymd_path,
     uuid_name + extension,
   ])
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nickname = models.TextField()
 
 class Trashcan(models.Model):
     latitude = models.FloatField()
