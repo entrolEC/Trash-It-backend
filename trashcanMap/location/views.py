@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 class TrashcanViewSet(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
     serializer_class = TrashcanSerializer
-    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     #http_method_names = ['get', 'post']
 
     def perform_create(self, serializer):
@@ -42,9 +42,9 @@ class SignupView(APIView):
 
 class SigninView(APIView):
     def post(self, request):
-        user = authenticate(password=request.data['password'])
+        user = authenticate(username=request.data['username'], password=request.data['password'])
         if user is not None:
             token = Token.objects.get(user=user)
             return Response({"Token": token.key})
         else:
-            return Response(status=401)
+            return Response({'error': 1})

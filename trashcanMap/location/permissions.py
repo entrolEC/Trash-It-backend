@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 from location.models import Trashcan
 from django.contrib.auth.models import User
 
-SAFE_METHODS = ['POST','GET', 'HEAD', 'OPTIONS']
+SAFE_METHODS = ['GET']
 
 class IsAuthenticatedOrReadOnly(BasePermission):
     """
@@ -21,16 +21,19 @@ class IsAuthenticatedOrReadOnly(BasePermission):
             if request.user.is_superuser:
                 print(11)
                 return True
-            elif (request.user and request.method in SAFE_METHODS):
+            elif (request.method in SAFE_METHODS):
                 print(12)
                 return True
-            else:
+            elif (request.user and request.method == 'POST'):
                 print(13)
+                return True
+            else:
+                print(14)
                 return False
         if request.user.is_superuser:
             print(1)
             return True
-        elif (request.user and request.method in SAFE_METHODS):
+        elif (request.method in SAFE_METHODS):
             print(2)
             return True
         elif (request.method == 'DELETE' and request.user == post.name):
