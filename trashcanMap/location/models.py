@@ -17,14 +17,13 @@ def date_upload_to(instance, filename):
     uuid_name + extension,
   ])
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    nickname = models.TextField()
+
 
 class Trashcan(models.Model):
-    user = models.CharField(max_length=20)
     latitude = models.FloatField()
     longitude = models.FloatField()
     address = models.CharField(max_length=50)
     image = models.FileField(upload_to=date_upload_to, max_length=300)
     description = models.CharField(max_length=200)
+    name = models.ForeignKey('auth.User', 
+       related_name='author', on_delete=models.CASCADE)

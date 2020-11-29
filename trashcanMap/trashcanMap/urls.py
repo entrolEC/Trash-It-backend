@@ -29,8 +29,11 @@ router.register(r'locations', views.TrashcanViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('users/', views.UserList.as_view()),
+    path('users/<int:pk>/', views.UserDetail.as_view()),
+    path('signin/', views.UserList.as_view()),
     path('signup/',views.SignupView.as_view()),
-    path('signin/',views.LoginView.as_view()),
-    path('admin/', admin.site.urls)
+    path('signin/',views.SigninView.as_view()),
+    #path('api-auth/', include('rest_framework.urls'))
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
