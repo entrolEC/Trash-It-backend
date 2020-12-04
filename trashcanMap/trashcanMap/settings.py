@@ -36,7 +36,7 @@ def get_secret(setting, secrets=secrets):
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = "m0j01kt7zdy!b&v1jdwf&f(*g7b7=imf%kz-wazgr8uy_t!+11"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
