@@ -33,12 +33,16 @@ class UserDetail(generics.RetrieveAPIView):
 
 class SignupView(APIView):
     def post(self, request):
-        user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
+        if(len(request.data['username']) <= 12 and len(request.data['password']) >= 8):
+            user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
 
-        user.save()
+            user.save()
 
-        token = Token.objects.create(user=user)
-        return Response({"Token": token.key})
+            token = Token.objects.create(user=user)
+            return Response({"Token": token.key})
+        else:
+            return Response({"error": "id or password invalied"})
+        
 
 class SigninView(APIView):
     def post(self, request):
