@@ -25,5 +25,4 @@ class Trashcan(models.Model):
     address = models.CharField(max_length=50)
     image = models.FileField(upload_to=date_upload_to, max_length=300)
     description = models.CharField(max_length=200)
-    name = models.ForeignKey('auth.User', 
-       related_name='author', on_delete=models.CASCADE)
+    name = models.ForeignKey('auth.User', related_name='author', on_delete=models.CASCADE)
