@@ -1,1 +1,1 @@
-web: gunicorn trashcanMap.wsgi --log-file -
+web: gunicorn location.wsgi --log-file -
