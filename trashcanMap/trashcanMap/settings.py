@@ -17,7 +17,7 @@ import sys
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SITE_ID = 1
+SITE_ID = 3
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -73,7 +73,7 @@ for key, value in secrets.items():
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost',".ap-northeast-2.compute.amazonaws.com", "0.0.0.0", "192.168.219.102"]
+ALLOWED_HOSTS = ['localhost',"127.0.0.1", "0.0.0.0", "192.168.219.102"]
 
 # Application definition
 

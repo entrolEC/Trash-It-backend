@@ -12,14 +12,17 @@ import requests
 from rest_framework import status
 from json.decoder import JSONDecodeError
 
-
+def delete_all_user() :
+  CustomUser.objects.all().delete()
+  SocialAccount.objects.all().delete()
+  
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     
 state = getattr(settings, 'STATE')
-BASE_URL = 'http://localhost:8000/'
+BASE_URL = 'http://127.0.0.1:8000/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'accounts/google/callback/'
 def google_login(request):
     """
@@ -56,7 +59,7 @@ def google_callback(request):
     Signup or Signin Request
     """
     try:
-        user = User.objects.get(email=email)
+        user = CustomUser.objects.get(email=email)
         # 기존에 가입된 유저의 Provider가 google이 아니면 에러 발생, 맞으면 로그인
         # 다른 SNS로 가입된 유저
         social_user = SocialAccount.objects.get(user=user)
@@ -72,9 +75,9 @@ def google_callback(request):
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
-        accept_json.pop('user', None)
+        #accept_json.pop('user', None)
         return JsonResponse(accept_json)
-    except User.DoesNotExist:
+    except CustomUser.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
         data = {'access_token': access_token, 'code': code}
         accept = requests.post(
@@ -83,7 +86,7 @@ def google_callback(request):
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
         accept_json = accept.json()
-        accept_json.pop('user', None)
+        #accept_json.pop('user', None)
         return JsonResponse(accept_json)
 class GoogleLogin(SocialLoginView):
     adapter_class = google_view.GoogleOAuth2Adapter
