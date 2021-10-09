@@ -12,10 +12,38 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os, json
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SITE_ID = 1
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer',
+}
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+REST_USE_JWT = True
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer',
+}
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,22 +53,27 @@ secret_file = os.path.join(BASE_DIR, 'secrets.json')
 
 with open(secret_file) as f:
     secrets = json.loads(f.read())
+    
+ROOT_DIR = os.path.dirname(BASE_DIR)
+SECRET_BASE_FILE = os.path.join(BASE_DIR, 'secrets.json')
+secrets = json.loads(open(SECRET_BASE_FILE).read())
+for key, value in secrets.items():
+    setattr(sys.modules[__name__], key, value)
 
-def get_secret(setting, secrets=secrets):
-    try:
-        print("check: ", secrets[setting])
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
+# def get_secret(setting, secrets=secrets):
+#     try:
+#         print("check: ", secrets[setting])
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = "Set the {} environment variable".format(setting)
+#         raise ImproperlyConfigured(error_msg)
 
-
+# SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost',".ap-northeast-2.compute.amazonaws.com"]
-
+ALLOWED_HOSTS = ['localhost',".ap-northeast-2.compute.amazonaws.com", "0.0.0.0", "192.168.219.102"]
 
 # Application definition
 
@@ -51,11 +84,34 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
+
     'location',
-    'rest_framework.authtoken'
+    'accounts'
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+}
+'''
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -63,6 +119,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication'
     ]    
 }
+'''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

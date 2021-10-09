@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from location.serializers import TrashcanSerializer, UserSerializer
+from location.serializers import TrashcanSerializer
+from accounts.serializers import UserSerializer
 from location.models import Trashcan
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
 from location.permissions import *
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
+from accounts.models import CustomUser
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.decorators import action
@@ -24,16 +25,16 @@ class TrashcanViewSet(viewsets.ModelViewSet):
         serializer.save(name=self.request.user)
 
 class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 class SignupView(APIView):
     def post(self, request):
-        if(len(request.data['username']) <= 12 and len(request.data['password']) >= 8):
+        if(4< len(request.data['username']) <= 12 and len(request.data['password']) >= 8):
             user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
 
             user.save()
