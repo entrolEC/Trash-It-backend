@@ -1,1 +1,3 @@
 https://nerogarret.tistory.com/48?category=800142
+
+Social applications 추가할때 꼭 ' localhost:8000 ' 똑같이 추가할것

@@ -22,7 +22,8 @@ class TrashcanViewSet(viewsets.ModelViewSet):
     #http_method_names = ['get', 'post']
 
     def perform_create(self, serializer):
-        serializer.save(name=self.request.user)
+        
+        serializer.save(author=self.request.user)
 
 class UserList(generics.ListAPIView):
     queryset = CustomUser.objects.all()
