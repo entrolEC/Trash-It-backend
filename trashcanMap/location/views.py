@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from location.serializers import TrashcanSerializer, UserSerializer
+from location.serializers import TrashcanSerializer, PinSerializer
+from accounts.serializers import UserSerializer
 from location.models import Trashcan
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -14,6 +15,15 @@ from rest_framework.decorators import action
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
+class PinView(viewsets.ModelViewSet):
+    queryset = Trashcan.objects.all()
+    serializer_class = PinSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    #http_method_names = ['get', 'post']
+
+    def perform_create(self, serializer):
+        serializer.save(name=self.request.user)
+
 class TrashcanViewSet(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
     serializer_class = TrashcanSerializer
@@ -22,7 +32,6 @@ class TrashcanViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(name=self.request.user)
-
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
