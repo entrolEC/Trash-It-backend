@@ -21,6 +21,7 @@ urlpatterns = [
     path('signin/',views.SigninView.as_view()),
     path('pin/', views.PinView.as_view({'get': 'list'})),
     path('admin/', admin.site.urls),
+    path('accounts', include('accounts.urls'))
     #path('api-auth/', include('rest_framework.urls'))
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
