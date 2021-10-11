@@ -14,6 +14,8 @@ from django.contrib.auth import authenticate
 from rest_framework.decorators import action
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+import jwt
+
 
 class PinView(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
@@ -31,7 +33,8 @@ class TrashcanViewSet(viewsets.ModelViewSet):
     #http_method_names = ['get', 'post']
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        print(self.request.user)
+        serializer.save(author_id=self.request.user)
 
 class UserList(generics.ListAPIView):
     queryset = CustomUser.objects.all()
