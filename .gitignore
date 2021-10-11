@@ -156,3 +156,4 @@ aws_putty_key.ppk
 trashcanMap/secrets.json
 
 v.cmd
+db.sqlite3

@@ -102,7 +102,6 @@ INSTALLED_APPS = [
 
 
     'location',
-    'rest_framework.authtoken',
     'corsheaders',
     'accounts'
 ]
