@@ -24,7 +24,7 @@ class IsAuthenticatedOrReadOnly(BasePermission):
             elif (request.method in SAFE_METHODS):
                 print(12)
                 return True
-            elif (request.user and request.method == 'POST'):
+            elif (request.user and not request.user.is_anonymous and request.method == 'POST'):
                 print(13)
                 return True
             else:
@@ -36,7 +36,7 @@ class IsAuthenticatedOrReadOnly(BasePermission):
         elif (request.method in SAFE_METHODS):
             print(2)
             return True
-        elif (request.method == 'DELETE' and request.user == post.name):
+        elif (request.method == 'DELETE' and request.user.email == post.author.email):
             print(3)
             return True
         else:

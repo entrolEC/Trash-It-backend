@@ -157,3 +157,4 @@ trashcanMap/secrets.json
 
 v.cmd
 db.sqlite3
+trashcanMap/db.sqlite3

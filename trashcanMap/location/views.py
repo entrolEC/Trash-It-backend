@@ -23,9 +23,6 @@ class PinView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     #http_method_names = ['get', 'post']
 
-    def perform_create(self, serializer):
-        serializer.save(name=self.request.user)
-
 class TrashcanViewSet(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
     serializer_class = TrashcanSerializer
@@ -34,7 +31,7 @@ class TrashcanViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         print(self.request.user)
-        serializer.save(author_id=self.request.user)
+        serializer.save(author=self.request.user)
 
 class UserList(generics.ListAPIView):
     queryset = CustomUser.objects.all()

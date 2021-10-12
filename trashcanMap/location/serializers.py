@@ -1,15 +1,15 @@
 from location.models import Trashcan
 from rest_framework import serializers
+from accounts.serializers import UserSerializer
 
 class PinSerializer(serializers.HyperlinkedModelSerializer):
-    name = serializers.ReadOnlyField(source='name.username')
 
     class Meta:
         model = Trashcan
-        fields = ('id', 'latitude', 'longitude', 'name')
+        fields = ('id', 'latitude', 'longitude')
 
 class TrashcanSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.ReadOnlyField(read_only=True)
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Trashcan
