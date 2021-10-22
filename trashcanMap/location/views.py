@@ -26,7 +26,7 @@ class PinView(viewsets.ModelViewSet):
 class TrashcanViewSet(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
     serializer_class = TrashcanSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     #http_method_names = ['get', 'post']
     
     # detail에서 user_id를 받아와야됨
@@ -47,7 +47,6 @@ class TrashcanViewSet(viewsets.ModelViewSet):
     
 class TrashcanActionView(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request):
         serializer = TrashcanActionSerializer(data=request.POST)
         if serializer.is_valid(raise_exception=True):
