@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI service
+After=syslog.target
+
+[Service]
+ExecStart=/srv/trashcanMap_backend/venv/bin/uwsgi -i /srv/trashcanMap_backend/trashcanMap/.config/uwsgi/trashcanMap_backend.ini
+
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
