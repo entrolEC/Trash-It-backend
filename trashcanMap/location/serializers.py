@@ -3,10 +3,17 @@ from rest_framework import serializers
 from accounts.serializers import UserSerializer
 
 class PinSerializer(serializers.HyperlinkedModelSerializer):
+    likes = serializers.SerializerMethodField(read_only=True)
+    dislikes = serializers.SerializerMethodField(read_only=True)
 
+    def get_likes(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes(self, obj):
+        return obj.dislikes.count()
     class Meta:
         model = Trashcan
-        fields = ('id', 'latitude', 'longitude')
+        fields = ('id', 'latitude', 'longitude', 'likes', 'dislikes')
 
 class TrashcanSerializer(serializers.HyperlinkedModelSerializer):
     author = UserSerializer(read_only=True)
