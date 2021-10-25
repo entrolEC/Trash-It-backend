@@ -158,3 +158,5 @@ trashcanMap/secrets.json
 *.cmd
 db.sqlite3
 trashcanMap/db.sqlite3
+
+*.ppk
