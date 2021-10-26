@@ -76,7 +76,7 @@ for key, value in secrets.items():
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    ".us-east-2.compute.amazonaws.com",
+    ".ap-northeast-2.compute.amazonaws.com",
     ".trashit.space",
 ]
 
