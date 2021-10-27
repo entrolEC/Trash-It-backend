@@ -160,3 +160,4 @@ db.sqlite3
 trashcanMap/db.sqlite3
 
 *.ppk
+db.sqlite3
