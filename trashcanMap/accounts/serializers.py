@@ -17,6 +17,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField(read_only=True)
     email = serializers.SerializerMethodField(read_only=True)
     username = serializers.SerializerMethodField(read_only=True)
+    total = serializers.SerializerMethodField(read_only=True)
 
     def get_log(self, obj):
         today = date.today()
@@ -25,6 +26,9 @@ class UserDetailSerializer(serializers.ModelSerializer):
         timeQuerySet = queryset.filter(timestamp__range=[endday, today])
         listQuerySet = list(timeQuerySet)
         return json.loads(sl.serialize('json', listQuerySet))
+    
+    def get_total(self, obj):
+        return Trashcan.objects.filter(author=self.context.get("user_id")).count()
 
     def get_id(self, obj):
         return obj.first().id
@@ -37,4 +41,4 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username', 'log']
+        fields = ['id', 'email', 'username', 'log', 'total']
