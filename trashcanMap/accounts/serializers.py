@@ -6,11 +6,11 @@ import json
 from datetime import date, timedelta
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    author = serializers.PrimaryKeyRelatedField(many=True, queryset=Trashcan.objects.all())
     
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username','date_of_birth']
+        fields = ['id', 'email', 'username','date_of_birth', 'author']
         
 class UserDetailSerializer(serializers.ModelSerializer):
     log = serializers.SerializerMethodField(read_only=True)

@@ -22,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     
 state = getattr(settings, 'STATE')
-BASE_URL = 'http://127.0.0.1:8000/'
+BASE_URL = '127.0.0.1:8000/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'accounts/google/callback/'
 def google_login(request):
     """
