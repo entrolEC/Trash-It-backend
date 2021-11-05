@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from location.serializers import TrashcanSerializer, PinSerializer, TrashcanActionSerializer
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, UserDetailSerializer
 from location.models import Trashcan, Likes
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -86,8 +86,13 @@ class UserList(generics.ListAPIView):
     serializer_class = UserSerializer
 
 class UserDetail(generics.RetrieveAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get(self, request, pk):
+        queryset = CustomUser.objects.all()
+        obj = queryset.filter(id=pk)
+        serializer = UserDetailSerializer(obj, context={'user_id': pk})
+        print(serializer.data)
+        return Response(serializer.data, status=200)
 
 class SignupView(APIView):
     def post(self, request):

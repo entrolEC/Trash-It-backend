@@ -37,3 +37,4 @@ class Trashcan(models.Model):
     author = models.ForeignKey('accounts.CustomUser', related_name='author', on_delete=models.CASCADE, db_column="author")
     likes = models.ManyToManyField('accounts.CustomUser', related_name='likes', blank=True, through='Likes')
     dislikes = models.ManyToManyField('accounts.CustomUser', related_name='dislikes', blank=True, through='DisLikes')
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True)
