@@ -91,7 +91,6 @@ class UserDetail(generics.RetrieveAPIView):
         queryset = CustomUser.objects.all()
         obj = queryset.filter(id=pk)
         serializer = UserDetailSerializer(obj, context={'user_id': pk})
-        print(serializer.data)
         return Response(serializer.data, status=200)
 
 class SignupView(APIView):

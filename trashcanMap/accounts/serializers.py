@@ -20,12 +20,22 @@ class UserDetailSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField(read_only=True)
 
     def get_log(self, obj):
-        today = date.today()
+        today = date.today() + timedelta(days=1)
         endday = today - timedelta(days=7)
         queryset = Trashcan.objects.filter(author=self.context.get("user_id"))
         timeQuerySet = queryset.filter(timestamp__range=[endday, today])
         listQuerySet = list(timeQuerySet)
-        return json.loads(sl.serialize('json', listQuerySet))
+        resData = {}
+        jsonData = json.loads(sl.serialize('json', listQuerySet))
+
+        for item in jsonData:
+            item['fields']['pk'] = item['pk']
+            if str(item['fields']['timestamp'][5:10]) in resData:
+                resData[str(item['fields']['timestamp'][5:10])].append(item['fields'])
+            else:
+                resData[str(item['fields']['timestamp'][5:10])] = []
+                resData[str(item['fields']['timestamp'][5:10])].append(item['fields'])
+        return resData
     
     def get_total(self, obj):
         return Trashcan.objects.filter(author=self.context.get("user_id")).count()
