@@ -82,6 +82,7 @@ class TrashcanActionView(APIView):
             return Response(serializer.data, status=200)
 
 class UserList(generics.ListAPIView):
+    permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
