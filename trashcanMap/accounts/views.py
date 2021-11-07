@@ -32,6 +32,7 @@ def google_login(request):
     client_id = getattr(settings, "SOCIAL_AUTH_GOOGLE_CLIENT_ID")
     return redirect(f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&response_type=code&redirect_uri={GOOGLE_CALLBACK_URI}&scope={scope}")
 def google_callback(request):
+    print("second!!!!")
     client_id = getattr(settings, "SOCIAL_AUTH_GOOGLE_CLIENT_ID")
     client_secret = getattr(settings, "SOCIAL_AUTH_GOOGLE_SECRET")
     code = request.GET.get('code')
@@ -75,6 +76,7 @@ def google_callback(request):
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
+        print(accept_json)
         #accept_json.pop('user', None)
         return JsonResponse(accept_json)
     except CustomUser.DoesNotExist:
