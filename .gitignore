@@ -161,3 +161,4 @@ trashcanMap/db.sqlite3
 
 *.ppk
 db.sqlite3
+.DS_Store
