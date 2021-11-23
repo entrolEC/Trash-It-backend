@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from location.serializers import TrashcanSerializer, PinSerializer, TrashcanActionSerializer
+from location.serializers import TrashcanSerializer, PinSerializer, TrashcanActionSerializer, TrashcanDetectionSerializer
 from accounts.serializers import UserSerializer, UserDetailSerializer
 from location.models import Trashcan, Likes
 from rest_framework.decorators import api_view
@@ -15,7 +15,8 @@ from rest_framework.decorators import action, permission_classes
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 import jwt
-
+from location.models import TrashcanDetection
+from django.conf import settings
 
 class PinView(viewsets.ModelViewSet):
     queryset = Trashcan.objects.all()
@@ -93,6 +94,23 @@ class UserDetail(generics.RetrieveAPIView):
         obj = queryset.filter(id=pk)
         serializer = UserDetailSerializer(obj, context={'user_id': pk})
         return Response(serializer.data, status=200)
+
+class TrashcanCheckView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def post(self, request):
+        serializer = TrashcanDetectionSerializer(data=request.data)
+        if serializer.is_valid():
+            image = TrashcanDetection.objects.create(image=request.data['image'])
+
+            # settings.py 에 정의되어있는 DETECTION_MODEL에서 object detection에 필요한 model을 불러옴
+            model = getattr(settings, 'DETECTION_MODEL')
+            results = model(['./media/' + str(image.image)])
+
+            for item in results.pandas().xyxy[0]['name']:
+                if item == 'trash_can':
+                    return Response(True, status=200)
+
+        return Response(False, status=200)
 
 class SignupView(APIView):
     def post(self, request):

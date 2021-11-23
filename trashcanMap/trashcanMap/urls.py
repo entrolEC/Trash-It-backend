@@ -21,6 +21,7 @@ urlpatterns = [
     path('signin/',views.SigninView.as_view()),
     path('action/',views.TrashcanActionView.as_view()),
     path('pin/', views.PinView.as_view({'get': 'list'})),
+    path('check/', views.TrashcanCheckView.as_view()),
     path('admin/', admin.site.urls),
     path('accounts', include('accounts.urls'))
     #path('api-auth/', include('rest_framework.urls'))

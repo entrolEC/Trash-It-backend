@@ -17,6 +17,16 @@ def date_upload_to(instance, filename):
     uuid_name + extension,
   ])
 
+def detection_upload_to(instance, filename):
+  # 길이 32 인 uuid 값
+  uuid_name = uuid4().hex
+  # 확장자 추출
+  extension = '.jpeg'
+  # 결합 후 return
+  return '/'.join([
+    "detection",
+    uuid_name + extension,
+  ])
 
 class Likes(models.Model):
     user = models.ForeignKey("accounts.CustomUser", related_name='likes_user', on_delete=models.CASCADE)
@@ -38,3 +48,6 @@ class Trashcan(models.Model):
     likes = models.ManyToManyField('accounts.CustomUser', related_name='likes', blank=True, through='Likes')
     dislikes = models.ManyToManyField('accounts.CustomUser', related_name='dislikes', blank=True, through='DisLikes')
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
+
+class TrashcanDetection(models.Model):
+    image = models.ImageField(upload_to=detection_upload_to, blank=True)

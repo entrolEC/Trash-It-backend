@@ -1,4 +1,4 @@
-from location.models import Trashcan, Likes
+from location.models import Trashcan, Likes, TrashcanDetection
 from rest_framework import serializers
 from accounts.serializers import UserSerializer
 
@@ -50,3 +50,8 @@ class TrashcanActionSerializer(serializers.Serializer):
         if not value in ['like', 'dislike']:   # actions in list
             raise serializers.ValidationError("not a valid action")
         return value
+
+class TrashcanDetectionSerializer(serializers.Serializer):
+    class Meta:
+        model = TrashcanDetection
+        fields = ('image')
