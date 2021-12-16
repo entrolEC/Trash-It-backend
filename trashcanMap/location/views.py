@@ -105,9 +105,14 @@ class TrashcanCheckView(APIView):
             # settings.py 에 정의되어있는 DETECTION_MODEL에서 object detection에 필요한 model을 불러옴
             model = getattr(settings, 'DETECTION_MODEL')
             results = model(['./media/' + str(image.image)])
+            print(results.pandas().xyxy)
 
-            for item in results.pandas().xyxy[0]['name']:
-                if item == 'trash_can':
+            resList = [[] for _ in range(len(results.pandas().xyxy[0]['name']))]
+            for i in range(len(results.pandas().xyxy[0]['name'])):
+                resList[i].append(results.pandas().xyxy[0]['name'][i])
+                resList[i].append(results.pandas().xyxy[0]['confidence'][i])
+            for item in resList:
+                if item[0] == 'trash_can' and item[1] >= 0.60:
                     return Response(True, status=200)
 
         return Response(False, status=200)
