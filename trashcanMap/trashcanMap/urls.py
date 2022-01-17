@@ -11,12 +11,11 @@ from django.conf import settings
 
 router = routers.DefaultRouter()
 router.register(r'locations', views.TrashcanViewSet)
+router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('users/', views.UserList.as_view()),
-    path('users/<int:pk>/', views.UserDetail.as_view()),
     path('signup/',views.SignupView.as_view()),
     path('signin/',views.SigninView.as_view()),
     path('action/',views.TrashcanActionViewSet.as_view({'post': 'action'})),

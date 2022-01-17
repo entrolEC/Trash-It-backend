@@ -84,18 +84,11 @@ class TrashcanActionViewSet(viewsets.ModelViewSet):
             serializer = TrashcanSerializer(obj, context={'user_id':request.data.get('user_id')})
             return Response(serializer.data, status=200)
 
-class UserList(generics.ListAPIView):
+
+class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-
-class UserDetail(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    def get(self, request, pk):
-        queryset = CustomUser.objects.all()
-        obj = queryset.filter(id=pk)
-        serializer = UserDetailSerializer(obj, context={'user_id': pk})
-        return Response(serializer.data, status=200)
 
 class TrashcanCheckViewSet(viewsets.ModelViewSet):
     serializer_class = TrashcanCheckSerializer
