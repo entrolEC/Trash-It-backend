@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from location.serializers import TrashcanSerializer, PinSerializer, TrashcanActionSerializer, TrashcanDetectionSerializer
+from location.serializers import TrashcanSerializer, PinSerializer, TrashcanActionSerializer, TrashcanCheckSerializer
 from accounts.serializers import UserSerializer, UserDetailSerializer
 from location.models import Trashcan, Likes
 from rest_framework.decorators import api_view
@@ -46,9 +46,11 @@ class TrashcanViewSet(viewsets.ModelViewSet):
         serializer = TrashcanSerializer(obj, context={'user_id':request.GET.get('user_id')})
         return Response(serializer.data, status=200)
     
-class TrashcanActionView(APIView):
+class TrashcanActionViewSet(viewsets.ModelViewSet):
+    serializer_class = TrashcanSerializer
     permission_classes = [AllowAny]
-    def post(self, request):
+
+    def action(self, request):
         serializer = TrashcanActionSerializer(data=request.POST)
         if serializer.is_valid(raise_exception=True):
             data = serializer.validated_data
@@ -95,10 +97,12 @@ class UserDetail(generics.RetrieveAPIView):
         serializer = UserDetailSerializer(obj, context={'user_id': pk})
         return Response(serializer.data, status=200)
 
-class TrashcanCheckView(APIView):
+class TrashcanCheckViewSet(viewsets.ModelViewSet):
+    serializer_class = TrashcanCheckSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    def post(self, request):
-        serializer = TrashcanDetectionSerializer(data=request.data)
+
+    def is_trashcan(self, request):
+        serializer = TrashcanCheckSerializer(data=request.data)
         if serializer.is_valid():
             image = TrashcanDetection.objects.create(image=request.data['image'])
 

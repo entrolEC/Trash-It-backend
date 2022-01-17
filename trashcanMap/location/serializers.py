@@ -51,7 +51,7 @@ class TrashcanActionSerializer(serializers.Serializer):
             raise serializers.ValidationError("not a valid action")
         return value
 
-class TrashcanDetectionSerializer(serializers.Serializer):
+class TrashcanCheckSerializer(serializers.Serializer):
     class Meta:
         model = TrashcanDetection
         fields = ('image')

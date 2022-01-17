@@ -19,9 +19,9 @@ urlpatterns = [
     path('users/<int:pk>/', views.UserDetail.as_view()),
     path('signup/',views.SignupView.as_view()),
     path('signin/',views.SigninView.as_view()),
-    path('action/',views.TrashcanActionView.as_view()),
+    path('action/',views.TrashcanActionViewSet.as_view({'post': 'action'})),
     path('pin/', views.PinView.as_view({'get': 'list'})),
-    path('check/', views.TrashcanCheckView.as_view()),
+    path('check/', views.TrashcanCheckViewSet.as_view({'post': 'is_trashcan'})),
     path('admin/', admin.site.urls),
     path('accounts', include('accounts.urls'))
     #path('api-auth/', include('rest_framework.urls'))
