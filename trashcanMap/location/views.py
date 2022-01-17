@@ -90,6 +90,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
+    def retrieve(self, request, pk):
+        queryset = CustomUser.objects.all()
+        obj = queryset.filter(id=pk)
+        serializer = UserDetailSerializer(obj, context={'user_id': pk})
+        return Response(serializer.data, status=200)
+
 class TrashcanCheckViewSet(viewsets.ModelViewSet):
     serializer_class = TrashcanCheckSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
