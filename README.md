@@ -52,5 +52,5 @@ python manage.py runserver
 https://youtu.be/mrb5fSpk5Cs
 #### 시연영상 (구)
 https://youtu.be/WLQHEkW0I7A
-#### Backend Link
-https://github.com/qoquma/trashcanMap_backend
+#### Frontend Link
+https://github.com/qoquma/trashcanMap
